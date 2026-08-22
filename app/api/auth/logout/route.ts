@@ -1,5 +1,9 @@
-import {notImplemented} from '@/lib/backend/api-response';
+import {NextResponse} from 'next/server';
+import {clearAuthCookies} from '@/lib/backend/auth-cookies';
 
 export async function POST() {
-  return notImplemented('Log out Supabase session');
+  const response = NextResponse.json({ok: true});
+  clearAuthCookies(response);
+
+  return response;
 }

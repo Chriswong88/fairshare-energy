@@ -1,12 +1,12 @@
-export type UserRole = 'renter' | 'seller';
+export type UserRole = 'buyer' | 'seller';
 
 export const ROLE_ROUTES: Record<UserRole, string> = {
-  renter: '/renter',
+  buyer: '/renter',
   seller: '/seller',
 };
 
 export function isUserRole(value: string): value is UserRole {
-  return value === 'renter' || value === 'seller';
+  return value === 'buyer' || value === 'seller';
 }
 
 export function getRoleRoute(role: UserRole) {

@@ -1,7 +1,7 @@
 -- FairShare Energy initial Supabase schema.
 -- Uses Supabase Auth's auth.users table as the source of login identity.
 
-create type public.user_role as enum ('renter', 'seller');
+create type public.user_role as enum ('buyer', 'seller');
 create type public.listing_type as enum ('sale', 'donation', 'fairshare');
 create type public.listing_status as enum ('draft', 'active', 'paused', 'cancelled', 'completed');
 create type public.transaction_status as enum ('pending', 'completed', 'cancelled', 'refunded');
@@ -12,14 +12,14 @@ create table public.profiles (
   address_line text not null,
   suburb text not null,
   postcode text not null,
-  active_role public.user_role not null default 'renter',
-  can_rent boolean not null default true,
+  active_role public.user_role not null default 'buyer',
+  can_buy boolean not null default true,
   can_sell boolean not null default false,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
 
-create table public.renter_profiles (
+create table public.buyer_profiles (
   user_id uuid primary key references public.profiles(id) on delete cascade,
   household_size integer,
   support_credit_cents integer not null default 0,
@@ -71,7 +71,7 @@ create table public.payment_methods (
 );
 
 alter table public.profiles enable row level security;
-alter table public.renter_profiles enable row level security;
+alter table public.buyer_profiles enable row level security;
 alter table public.seller_profiles enable row level security;
 alter table public.seller_listings enable row level security;
 alter table public.transactions enable row level security;
@@ -85,12 +85,12 @@ create policy "Users can update their own profile"
   on public.profiles for update
   using (auth.uid() = id);
 
-create policy "Users can read their renter profile"
-  on public.renter_profiles for select
+create policy "Users can read their buyer profile"
+  on public.buyer_profiles for select
   using (auth.uid() = user_id);
 
-create policy "Users can update their renter profile"
-  on public.renter_profiles for update
+create policy "Users can update their buyer profile"
+  on public.buyer_profiles for update
   using (auth.uid() = user_id);
 
 create policy "Users can read their seller profile"

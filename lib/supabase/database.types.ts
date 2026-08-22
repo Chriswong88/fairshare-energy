@@ -11,13 +11,13 @@ export type Profile = {
   suburb: string;
   postcode: string;
   active_role: UserRole;
-  can_rent: boolean;
+  can_buy: boolean;
   can_sell: boolean;
   created_at: string;
   updated_at: string;
 };
 
-export type RenterProfile = {
+export type BuyerProfile = {
   user_id: string;
   household_size: number | null;
   support_credit_cents: number;
