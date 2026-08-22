@@ -4,6 +4,7 @@ import {useState} from 'react';
 import {Portal,Stat} from '../renter/page';
 
 export default function Seller(){
+  const [modal,setModal]=useState(false);
   const [notice,setNotice]=useState('');
   const cancel=(name:string)=>setNotice(name+' has been cancelled.');
   return <Portal role="SOLAR SELLER" switchHref="/renter" switchText="Switch to renter">
@@ -37,5 +38,16 @@ export default function Seller(){
       <article><div><h3>8.0 kWh for sale</h3><p>Today until 5:00pm · 14¢/kWh</p></div><b>3.6 kWh sold</b><button className="cancel-button" onClick={()=>cancel('8.0 kWh sale listing')}>Cancel</button></article>
       <article><div><h3>4.0 kWh donation</h3><p>FairShare priority households</p></div><b>4 requests</b><button className="cancel-button" onClick={()=>cancel('4.0 kWh donation')}>Cancel</button></article>
     </section>
+    {modal&&<div className="modal-backdrop" onMouseDown={()=>setModal(false)}>
+      <form className="listing-modal" onMouseDown={e=>e.stopPropagation()} onSubmit={e=>{e.preventDefault();setModal(false);setNotice('Your 8 kWh offer is now live in the local marketplace.')}}>
+        <button type="button" className="close" onClick={()=>setModal(false)}>×</button>
+        <p className="kicker">NEW ENERGY OFFER</p><h2>List your surplus</h2>
+        <label>Energy available<input defaultValue="8.0 kWh"/></label>
+        <label>Sharing method<select><option>Sell at a fair price</option><option>Donate to a household</option><option>Allocate through FairShare</option></select></label>
+        <label>Price per kWh<input defaultValue="14¢"/></label>
+        <p className="tip">Suggested fair-price band: 11–16¢/kWh</p>
+        <button type="submit">Publish listing</button>
+      </form>
+    </div>}
   </Portal>
 }
