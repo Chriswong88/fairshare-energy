@@ -14,12 +14,12 @@ export default function NewListing(){
     const until=String(data.get('until'));
     const method=String(data.get('method'));
     const donation=method!=='sale';
-    const listing:Listing={id:Date.now(),title:quantity.toFixed(1)+' kWh '+(donation?'donation':'for sale'),detail:donation?(method==='fairshare'?'FairShare allocation · Waiting for match':'Free donation · Available today'):(price+'¢/kWh · Available until '+until),result:donation?'0 requests':'0 kWh sold',kind:donation?'donation':'sale'};
+    const listing:Listing={id:Date.now(),title:quantity.toFixed(1)+' kWh '+(donation?'donation':'for sale'),detail:donation?(method==='fairshare'?'FairShare allocation · Waiting for match':'Free donation · Available today'):(price+'¢/kWh · Live until '+until),result:donation?'0 requests':'0 kWh sold',kind:donation?'donation':'sale'};
     saveListings([listing,...loadListings()]);
     setPublishedText(quantity.toFixed(1)+' kWh is now listed '+(donation?'as a donation.':'at '+price+'¢/kWh.'));
     setPublished(true);
   };
-  if(published)return <Portal role="SOLAR SELLER" switchHref="/renter" switchText="Switch to renter"><section className="page-success"><span>✓</span><p className="kicker">LISTING PUBLISHED</p><h1>Your energy offer is ready</h1><p>{publishedText}</p><Link href="/seller/marketplace">View your listing →</Link></section></Portal>;
+  if(published)return <Portal role="SOLAR SELLER" switchHref="/renter" switchText="Switch to renter"><section className="page-success"><span>✓</span><p className="kicker">LISTING PUBLISHED</p><h1>Your energy offer is live</h1><p>{publishedText}</p><Link href="/seller/marketplace">View your listing →</Link></section></Portal>;
   return <Portal role="SOLAR SELLER" switchHref="/renter" switchText="Switch to renter">
     <div className="subpage-head"><Link href="/seller/marketplace">← Back to listings</Link><p className="kicker">NEW ENERGY OFFER</p><h1>Create a new listing</h1><p>Choose how much surplus energy to share and how neighbours can access it.</p></div>
     <form className="listing-page-form" onSubmit={e=>{e.preventDefault();publish(e.currentTarget)}}>
