@@ -4,7 +4,6 @@ import './globals.css';
 import './sections.css';
 import './seller-dashboard.css';
 import './seller-marketplace.css';
-import './marketplace.css';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
