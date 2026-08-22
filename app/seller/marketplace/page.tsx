@@ -1,14 +1,13 @@
 'use client';
 import Link from 'next/link';
-import {useEffect,useState} from 'react';
+import {useState} from 'react';
 import {Portal} from '../../renter/page';
-import {DEFAULT_LISTINGS,loadListings,saveListings} from './listing-store';
+import {loadListings,saveListings} from './listing-store';
 
 export default function SellerMarketplace(){
-  const [listings,setListings]=useState(DEFAULT_LISTINGS);
+  const [listings,setListings]=useState(()=>loadListings());
   const [confirmId,setConfirmId]=useState<number|null>(null);
   const [notice,setNotice]=useState('');
-  useEffect(()=>setListings(loadListings()),[]);
   const confirmCancel=()=>{
     const item=listings.find(x=>x.id===confirmId);
     const next=listings.filter(x=>x.id!==confirmId);
