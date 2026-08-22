@@ -1,4 +1,53 @@
 'use client';
+import Link from 'next/link';
 import {useState} from 'react';
-import {Portal,Stat,Feature} from '../renter/page';
-export default function Seller(){const [modal,setModal]=useState(false),[notice,setNotice]=useState('');return <Portal role="SOLAR SELLER" switchHref="/renter" switchText="Switch to renter"><div className="hero-row seller-hero"><div><p className="kicker">YOUR SOLAR, WORKING LOCALLY</p><h1>Share today’s surplus</h1><p>Choose to earn a fair return, donate to a neighbour, or let FairShare allocate it.</p></div><button onClick={()=>setModal(true)}>+ Create a listing</button></div>{notice&&<div className="notice">✓ {notice}<button onClick={()=>setNotice('')}>×</button></div>}<section className="stats"><Stat label="Available now" value="12.7 kWh" note="Estimated from demo meter"/><Stat label="Earned this month" value="$34.82" note="From 18 local transfers"/><Stat label="Community impact" value="96.4 kWh" note="Shared with 11 households"/></section><section className="solar-flow"><div><p className="kicker">SIMULATED SMART METER</p><h2>Live solar flow</h2><div className="flow"><span>☀<b>4.8 kW</b><small>Generating</small></span><i>→</i><span>⌂<b>1.7 kW</b><small>Home use</small></span><i>→</i><span>↗<b>3.1 kW</b><small>Surplus</small></span></div></div><div className="recommend"><span>RECOMMENDED PRICE</span><b>14¢<small>/kWh</small></b><p>Within today’s fair band</p></div></section><div className="section-head"><div><p className="kicker">ACTIVE LISTINGS</p><h2>Your energy offers</h2></div><button className="outline" onClick={()=>setModal(true)}>New listing</button></div><section className="seller-list"><article><span className="status">LIVE</span><div><h3>8.0 kWh for sale</h3><p>Today until 5:00pm · 14¢/kWh</p></div><b>3.6 kWh sold</b><button onClick={()=>setNotice('Listing paused. You can reactivate it at any time.')}>Pause</button></article><article><span className="status gold">MATCHING</span><div><h3>4.0 kWh donation</h3><p>FairShare priority households</p></div><b>4 requests</b><button onClick={()=>setNotice('Showing the FairShare allocation explanation for this demo donation.')}>View match</button></article></section><section className="functions"><h2>What sellers can do</h2><div><Feature n="01" title="Monitor surplus" text="See generation, home use and shareable power."/><Feature n="02" title="List energy" text="Set quantity, availability and a fair local price."/><Feature n="03" title="Donate or allocate" text="Gift power directly or use FairShare matching."/><Feature n="04" title="Track earnings" text="Review transfers, income and community impact."/></div></section>{modal&&<div className="modal-backdrop" onMouseDown={()=>setModal(false)}><form className="listing-modal" onMouseDown={e=>e.stopPropagation()} onSubmit={e=>{e.preventDefault();setModal(false);setNotice('Your 8 kWh offer is now live in the local marketplace.')}}><button type="button" className="close" onClick={()=>setModal(false)}>×</button><p className="kicker">NEW ENERGY OFFER</p><h2>List your surplus</h2><label>Energy available<input defaultValue="8.0 kWh"/></label><label>Sharing method<select><option>Sell at a fair price</option><option>Donate to a household</option><option>Allocate through FairShare</option></select></label><label>Price per kWh<input defaultValue="14¢"/></label><p className="tip">Suggested fair-price band: 11–16¢/kWh</p><button type="submit">Publish listing</button></form></div>}</Portal>}
+import {Portal,Stat} from '../renter/page';
+
+export default function Seller(){
+  const [modal,setModal]=useState(false);
+  const [notice,setNotice]=useState('');
+  const cancel=(name:string)=>setNotice(name+' has been cancelled.');
+  return <Portal role="SOLAR SELLER" switchHref="/renter" switchText="Switch to renter">
+    <div className="hero-row seller-hero">
+      <div><p className="kicker">YOUR SOLAR, WORKING LOCALLY</p><h1>Share today’s surplus</h1><p>Track your solar use, earn a fair return, or donate surplus energy to a neighbour.</p></div>
+      <Link className="primary-link" href="/seller/marketplace/new">+ Create a listing</Link>
+    </div>
+    {notice&&<div className="notice">✓ {notice}<button onClick={()=>setNotice('')}>×</button></div>}
+    <section className="stats seller-stats">
+      <Stat label="Wallet balance" value="$34.82" note="Available seller earnings"/>
+      <Stat label="Available now" value="12.7 kWh" note="Estimated solar surplus"/>
+    </section>
+    <section className="solar-flow usage-tracking">
+      <div>
+        <p className="kicker">SOLAR POWER USAGE TRACKING</p>
+        <h2>Today’s estimated energy use</h2>
+        <div className="usage-bars">
+          <div><span>Generated</span><i><b style={{width:'92%'}}/></i><strong>21.4 kWh</strong></div>
+          <div><span>Home usage</span><i><b style={{width:'41%'}}/></i><strong>8.7 kWh</strong></div>
+          <div><span>Available surplus</span><i><b style={{width:'59%'}}/></i><strong>12.7 kWh</strong></div>
+        </div>
+        <small className="assumption-note">Assumed daily solar generation and household usage for this demonstration.</small>
+      </div>
+      <div className="recommend"><span>RECOMMENDED PRICE</span><b>14¢<small>/kWh</small></b><p>Within today’s fair band</p></div>
+    </section>
+    <div className="section-head">
+      <div><p className="kicker">YOUR LISTINGS</p><h2>Current energy offers</h2></div>
+      <Link className="outline view-more" href="/seller/marketplace">View more →</Link>
+    </div>
+    <section className="seller-list simplified">
+      <article><div><h3>8.0 kWh for sale</h3><p>Today until 5:00pm · 14¢/kWh</p></div><b>3.6 kWh sold</b><button className="cancel-button" onClick={()=>cancel('8.0 kWh sale listing')}>Cancel</button></article>
+      <article><div><h3>4.0 kWh donation</h3><p>FairShare priority households</p></div><b>4 requests</b><button className="cancel-button" onClick={()=>cancel('4.0 kWh donation')}>Cancel</button></article>
+    </section>
+    {modal&&<div className="modal-backdrop" onMouseDown={()=>setModal(false)}>
+      <form className="listing-modal" onMouseDown={e=>e.stopPropagation()} onSubmit={e=>{e.preventDefault();setModal(false);setNotice('Your 8 kWh offer is now live in the local marketplace.')}}>
+        <button type="button" className="close" onClick={()=>setModal(false)}>×</button>
+        <p className="kicker">NEW ENERGY OFFER</p><h2>List your surplus</h2>
+        <label>Energy available<input defaultValue="8.0 kWh"/></label>
+        <label>Sharing method<select><option>Sell at a fair price</option><option>Donate to a household</option><option>Allocate through FairShare</option></select></label>
+        <label>Price per kWh<input defaultValue="14¢"/></label>
+        <p className="tip">Suggested fair-price band: 11–16¢/kWh</p>
+        <button type="submit">Publish listing</button>
+      </form>
+    </div>}
+  </Portal>
+}
