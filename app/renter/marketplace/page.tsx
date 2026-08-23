@@ -128,7 +128,7 @@ export default function RenterMarketplace() {
     setPurchaseAgreed(false);
   }, []);
 
-  const confirmPurchase = () => {
+  const confirmPurchase = async () => {
     if (!purchaseOffer || !purchaseAgreed) return;
 
     const purchase = {
@@ -147,6 +147,17 @@ export default function RenterMarketplace() {
       window.localStorage.setItem('fairshare-renter-purchases', JSON.stringify([...purchases, purchase]));
     } catch {
       window.localStorage.setItem('fairshare-renter-purchases', JSON.stringify([purchase]));
+    }
+
+    try {
+      await fetch('/api/buyer/energy', {
+        method: 'POST', headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({offerId: purchaseOffer.id, sellerName: purchaseOffer.name,
+          sellerSuburb: purchaseOffer.suburb, quantityKwh: purchaseKwh,
+          pricePerKwhCents: purchaseOffer.offerRate, standardRateCents: purchaseOffer.standardRate}),
+      });
+    } catch {
+      // The local record above keeps the purchase available when the backend is offline.
     }
 
     const remainingKwh = Math.max(0, purchaseOffer.availableKwh - purchaseKwh);
