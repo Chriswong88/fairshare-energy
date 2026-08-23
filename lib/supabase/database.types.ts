@@ -37,6 +37,18 @@ export type SellerProfile = {
   updated_at: string;
 };
 
+export type SellerEnergyMonth = {
+  id: string;
+  seller_id: string;
+  month_start: string;
+  generated_kwh: number;
+  used_at_home_kwh: number;
+  battery_kwh: number;
+  standard_export_kwh: number;
+  created_at: string;
+  updated_at: string;
+};
+
 export type SellerListing = {
   id: string;
   seller_id: string;

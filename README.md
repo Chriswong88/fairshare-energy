@@ -67,7 +67,17 @@ Open Supabase SQL Editor and run the full schema from:
 ```text
 backend/supabase/migrations/0001_initial_schema.sql
 backend/supabase/migrations/0002_seller_listing_system.sql
+backend/supabase/migrations/0003_seller_monthly_energy.sql
+backend/supabase/migrations/0004_repair_seller_listings.sql
 ```
+
+The monthly-energy migration provides the verified solar totals that the seller
+dashboard combines with live listings and transactions to show surplus, sales,
+earnings, and recent buyer activity.
+
+If publishing a listing reports a missing `seller_listings` column, run the
+repair migration (`0004_repair_seller_listings.sql`) in the Supabase SQL Editor
+and retry. It is safe to run more than once.
 
 If your Supabase project already had the older schema and signup shows an error about
 `electricity_plan` or `electricity_provider`, run:

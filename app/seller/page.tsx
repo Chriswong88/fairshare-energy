@@ -1,29 +1,34 @@
 'use client';
 
 import Link from 'next/link';
+import {useEffect, useMemo, useState} from 'react';
 import LocationLabel from '../location-label';
 
-const stats = [
-  {icon: 'bolt', label: 'Available surplus', value: '86', unit: 'kWh'},
-  {icon: 'cash', label: 'Current selling price', value: '12.0c', unit: '/kWh'},
-  {icon: 'bars', label: 'Energy sold this month', value: '64', unit: 'kWh'},
-  {icon: 'wallet', label: 'Earnings this month', value: 'AUD $7.68', unit: ''},
-];
-
-const energyBreakdown = [
-  {label: 'Used at home', value: '107 kWh (42%)', color: 'green'},
-  {label: 'Battery', value: '59 kWh (23%)', color: 'lime'},
-  {label: 'Shared locally', value: '38 kWh (15%)', color: 'blue'},
-  {label: 'Standard export', value: '52 kWh (20%)', color: 'grey'},
-];
-
-const recentActivity = [
-  ['24 Aug 2026, 8:42 am', 'Thomas W.', '0.8 km away', '16 kWh', '12c/kWh', 'AUD $1.92'],
-  ['23 Aug 2026, 6:15 pm', 'Sarah J.', '1.2 km away', '12 kWh', '12c/kWh', 'AUD $1.44'],
-  ['22 Aug 2026, 11:03 am', 'Mike R.', '0.6 km away', '10 kWh', '12c/kWh', 'AUD $1.20'],
-];
+type Dashboard = { profile: {full_name: string} | null; summary: {generatedKwh: number; usedAtHomeKwh: number; batteryKwh: number; sharedLocallyKwh: number; standardExportKwh: number; availableSurplusKwh: number; currentPricePerKwhCents: number; energySoldThisMonthKwh: number; earningsThisMonthCents: number}; activeOffer: {quantityKwh: number; soldKwh: number; pricePerKwhCents: number; status: string} | null; activity: Array<{id: string; date: string; buyerName: string; quantityKwh: number; amountCents: number; ratePerKwhCents: number; status: string}>};
 
 export default function Seller() {
+  const [dashboard, setDashboard] = useState<Dashboard | null>(null);
+  const [error, setError] = useState('');
+  useEffect(() => {
+    let disposed = false;
+    fetch('/api/seller/dashboard').then(async (response) => {
+      if (!response.ok) throw new Error();
+      return response.json() as Promise<Dashboard>;
+    }).then((data) => { if (!disposed) setDashboard(data); }).catch(() => { if (!disposed) setError('Could not load your live seller data. Please sign in and try again.'); });
+    return () => { disposed = true; };
+  }, []);
+  const summary = dashboard?.summary;
+  const total = summary?.generatedKwh ?? 0;
+  const stats = summary ? [
+    {icon: 'bolt', label: 'Available surplus', value: number(summary.availableSurplusKwh), unit: 'kWh'},
+    {icon: 'cash', label: 'Current selling price', value: rate(summary.currentPricePerKwhCents), unit: '/kWh'},
+    {icon: 'bars', label: 'Energy sold this month', value: number(summary.energySoldThisMonthKwh), unit: 'kWh'},
+    {icon: 'wallet', label: 'Earnings this month', value: money(summary.earningsThisMonthCents), unit: ''},
+  ] : [];
+  const energyBreakdown = useMemo(() => summary ? [
+    {label: 'Used at home', amount: summary.usedAtHomeKwh, color: 'green'}, {label: 'Battery', amount: summary.batteryKwh, color: 'lime'},
+    {label: 'Shared locally', amount: summary.sharedLocallyKwh, color: 'blue'}, {label: 'Standard export', amount: summary.standardExportKwh, color: 'grey'},
+  ] : [], [summary]);
   return (
     <main className="seller-dashboard-page">
       <aside className="seller-sidebar">
@@ -94,7 +99,7 @@ export default function Seller() {
           <div className="seller-greeting-row">
             <div>
               <span className="greeting-sun" />
-              <h1>Good morning, Alice</h1>
+              <h1>Good morning, {dashboard?.profile?.full_name?.split(' ')[0] ?? 'there'}</h1>
             </div>
             <Link className="offer-cta" href="/seller/marketplace/new">
               <span aria-hidden="true" /> Create new offer
@@ -123,13 +128,9 @@ export default function Seller() {
               </h2>
               <div className="solar-chart-row">
                 <div className="donut-chart">
-                  <span className="donut-label top">42%</span>
-                  <span className="donut-label right">23%</span>
-                  <span className="donut-label left">15%</span>
-                  <span className="donut-label grey">20%</span>
                   <div>
                     <small>Total</small>
-                    <b>256 kWh</b>
+                    <b>{number(total)} kWh</b>
                   </div>
                 </div>
                 <div className="energy-legend">
@@ -137,7 +138,7 @@ export default function Seller() {
                     <div key={item.label}>
                       <span className={item.color} />
                       <p>{item.label}</p>
-                      <strong>{item.value}</strong>
+                      <strong>{number(item.amount)} kWh ({percent(item.amount, total)})</strong>
                     </div>
                   ))}
                   <div className="community-note">
@@ -151,29 +152,9 @@ export default function Seller() {
             <article className="active-offer-panel">
               <div className="panel-title-row">
                 <h2>Active offer</h2>
-                <span className="active-pill">Active</span>
+                {dashboard?.activeOffer && <span className="active-pill">{dashboard.activeOffer.status}</span>}
               </div>
-              <div className="offer-split">
-                <div>
-                  <b>60</b>
-                  <span>kWh</span>
-                  <p>Offered</p>
-                </div>
-                <div>
-                  <b>38</b>
-                  <span>kWh</span>
-                  <p>Sold</p>
-                </div>
-              </div>
-              <div className="community-rate">
-                <span />
-                <div>
-                  <p>Community rate</p>
-                  <strong>
-                    12c<small>/kWh</small>
-                  </strong>
-                </div>
-              </div>
+              {dashboard?.activeOffer ? <><div className="offer-split"><div><b>{number(dashboard.activeOffer.quantityKwh)}</b><span>kWh</span><p>Offered</p></div><div><b>{number(dashboard.activeOffer.soldKwh)}</b><span>kWh</span><p>Sold</p></div></div><div className="community-rate"><span /><div><p>Community rate</p><strong>{rate(dashboard.activeOffer.pricePerKwhCents)}<small>/kWh</small></strong></div></div></> : <p>No active offer yet.</p>}
               <Link className="view-offer-button" href="/seller/marketplace">
                 View offer <span>{'>'}</span>
               </Link>
@@ -195,24 +176,32 @@ export default function Seller() {
                 <span>Earnings</span>
                 <span>Status</span>
               </div>
-              {recentActivity.map((row) => (
-                <div className="activity-row" key={row[0]}>
+              {dashboard?.activity.map((row) => (
+                <div className="activity-row" key={row.id}>
                   <span className="match-icon" />
-                  <span>{row[0]}</span>
+                  <span>{date(row.date)}</span>
                   <span>
-                    <b>{row[1]}</b>
-                    <small>{row[2]}</small>
+                    <b>{row.buyerName}</b>
+                    <small>Community buyer</small>
                   </span>
-                  <span>{row[3]}</span>
-                  <span>{row[4]}</span>
-                  <span>{row[5]}</span>
-                  <span className="matched-pill">Matched</span>
+                  <span>{number(row.quantityKwh)} kWh</span>
+                  <span>{rate(row.ratePerKwhCents)}/kWh</span>
+                  <span>{money(row.amountCents)}</span>
+                  <span className="matched-pill">{row.status === 'completed' ? 'Completed' : 'Matched'}</span>
                 </div>
               ))}
+              {!dashboard?.activity.length && !error && <p className="empty-state">No buyer matches yet.</p>}
             </div>
           </section>
+          {error && <p className="listing-form-error">{error}</p>}
         </div>
       </section>
     </main>
   );
 }
+
+function number(value: number) { return new Intl.NumberFormat('en-AU', {maximumFractionDigits: 1}).format(value); }
+function money(cents: number) { return new Intl.NumberFormat('en-AU', {style: 'currency', currency: 'AUD'}).format(cents / 100); }
+function rate(cents: number) { return `${cents.toFixed(1)}c`; }
+function percent(value: number, total: number) { return total ? `${Math.round((value / total) * 100)}%` : '0%'; }
+function date(value: string) { return new Intl.DateTimeFormat('en-AU', {dateStyle: 'medium', timeStyle: 'short'}).format(new Date(value)); }

@@ -3,7 +3,6 @@
 import Link from 'next/link';
 import {useState} from 'react';
 import LocationLabel from '../../../location-label';
-import {loadListings, saveListings, type Listing} from '../listing-store';
 
 const supportOptions = [
   {
@@ -49,20 +48,6 @@ export default function NewListing() {
   const publish = async () => {
     setSaving(true);
     setError('');
-    const listing: Listing = {
-      id: Date.now(),
-      title: `${amount.toFixed(1)} kWh for sale`,
-      detail: `12.0c/kWh - ${periodLabel}`,
-      result: '0 kWh sold',
-      kind: 'sale',
-      quantityKwh: amount,
-      pricePerKwhCents: 12,
-      availableFrom: startDate,
-      availableUntil: endDate,
-      status: 'active',
-      supportPreference: support as Listing['supportPreference'],
-      donationPercentage: donate ? 10 : 0,
-    };
     try {
       const response = await fetch('/api/listings', {
         method: 'POST',
@@ -73,12 +58,16 @@ export default function NewListing() {
           supportPreference: support, donationPercentage: donate ? 10 : 0,
         }),
       });
-      if (!response.ok) saveListings([listing, ...loadListings()]);
+      if (!response.ok) {
+        const data = (await response.json().catch(() => null)) as {error?: string} | null;
+        setError(data?.error ?? 'Could not publish the listing. Please try again.');
+        return;
+      }
+      setPublished(true);
     } catch {
-      saveListings([listing, ...loadListings()]);
+      setError('Could not reach the server. Please check your connection and try again.');
     } finally {
       setSaving(false);
-      setPublished(true);
     }
   };
 
