@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import LocationLabel from '../../location-label';
 
 const impactStats = [
   {tone: 'green', icon: 'P', value: '8', label: 'households supported'},
@@ -34,7 +35,7 @@ export default function SellerImpact() {
           <div />
           <div className="seller-top-actions">
             <button className="location-button">
-              <span aria-hidden="true" /> Wollongong, NSW
+              <span aria-hidden="true" /> <LocationLabel />
             </button>
             <button className="bell-button" aria-label="Notifications">
               <span>2</span>

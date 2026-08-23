@@ -21,6 +21,8 @@ export async function POST(request: NextRequest) {
     user_metadata: {
       full_name: payload.fullName,
       active_role: payload.activeRole,
+      electricity_provider: payload.electricityProvider,
+      electricity_plan: payload.electricityPlan,
     },
   });
 
@@ -35,6 +37,8 @@ export async function POST(request: NextRequest) {
     address_line: payload.addressLine,
     suburb: payload.suburb,
     postcode: payload.postcode,
+    electricity_provider: payload.electricityProvider,
+    electricity_plan: payload.electricityPlan,
     active_role: payload.activeRole,
     can_buy: true,
     can_sell: true,
@@ -49,6 +53,13 @@ export async function POST(request: NextRequest) {
 
   if (setupError) {
     await admin.auth.admin.deleteUser(userId);
+
+    if (setupError.message.includes('electricity_plan') || setupError.message.includes('electricity_provider')) {
+      return serverError(
+        'Database schema is missing account profile fields. Run backend/supabase/migrations/0002_add_account_profile_fields.sql in Supabase SQL Editor, then try again.',
+      );
+    }
+
     return serverError(setupError.message);
   }
 
@@ -70,6 +81,8 @@ export async function POST(request: NextRequest) {
       address_line: payload.addressLine,
       suburb: payload.suburb,
       postcode: payload.postcode,
+      electricity_provider: payload.electricityProvider,
+      electricity_plan: payload.electricityPlan,
       active_role: payload.activeRole,
       can_buy: true,
       can_sell: true,

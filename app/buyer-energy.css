@@ -1,0 +1,486 @@
+.buyer-energy-page .buyer-main {
+  background: #fff;
+}
+
+.buyer-energy-content {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 24px 28px 30px;
+}
+
+.buyer-energy-head {
+  margin-bottom: 18px;
+}
+
+.buyer-energy-head h1 {
+  color: #081936;
+  font-size: 34px;
+  font-weight: 800;
+  line-height: 1.1;
+  margin: 0 0 10px;
+}
+
+.buyer-energy-head p {
+  color: #43516b;
+  font-size: 15px;
+  margin: 0;
+}
+
+.energy-top-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  margin-bottom: 15px;
+}
+
+.energy-top-stats article,
+.energy-month-card,
+.purchase-summary-card,
+.individual-purchases-card {
+  background: #fff;
+  border: 1px solid #d9e0ea;
+  border-radius: 9px;
+  box-shadow: 0 8px 20px #0b1d3c08;
+}
+
+.energy-top-stats article {
+  min-height: 100px;
+  padding: 18px 20px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.energy-top-stats p {
+  color: #111a2e;
+  font-size: 14px;
+  margin: 0 0 8px;
+}
+
+.energy-top-stats strong {
+  color: #0b7440;
+  display: block;
+  font-size: 31px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.energy-top-stats strong.blue {
+  color: #0752b5;
+}
+
+.energy-home-icon,
+.energy-grid-icon,
+.energy-people-icon {
+  display: grid;
+  place-items: center;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  flex: 0 0 auto;
+  font-weight: 900;
+}
+
+.energy-home-icon {
+  background: #e2f1e5;
+  position: relative;
+}
+
+.energy-home-icon:before {
+  content: '';
+  position: absolute;
+  left: 18px;
+  bottom: 16px;
+  width: 35px;
+  height: 25px;
+  background: #fff8dc;
+  border: 2px solid #1d6ab1;
+}
+
+.energy-home-icon:after {
+  content: '';
+  position: absolute;
+  left: 14px;
+  bottom: 41px;
+  width: 45px;
+  height: 24px;
+  background: #1d6ab1;
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+}
+
+.energy-grid-icon {
+  background: #e7f1ff;
+  color: #0752b5;
+  font-size: 22px;
+}
+
+.energy-people-icon {
+  background: #e3f3e5;
+  color: #0b7440;
+  font-size: 22px;
+}
+
+.energy-main-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(320px, .88fr);
+  gap: 20px;
+  margin-bottom: 15px;
+}
+
+.energy-month-card,
+.purchase-summary-card,
+.individual-purchases-card {
+  padding: 20px;
+}
+
+.energy-card-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 16px;
+}
+
+.energy-card-title h2,
+.purchase-summary-card h2,
+.individual-purchases-card h2 {
+  color: #081936;
+  font-size: 18px;
+  margin: 0;
+}
+
+.energy-card-title button {
+  height: 38px;
+  border: 1px solid #cfd7e3;
+  border-radius: 7px;
+  background: #fff;
+  color: #17233d;
+  font: 500 15px var(--font-geist-sans), Arial, sans-serif;
+  padding: 0 18px;
+}
+
+.energy-card-title button span {
+  margin-left: 18px;
+}
+
+.coverage-bar {
+  display: grid;
+  grid-template-columns: 64fr 36fr;
+  height: 43px;
+  border-radius: 7px;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+.coverage-bar span {
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  font-size: 21px;
+}
+
+.coverage-bar span:first-child {
+  background: linear-gradient(90deg, #007d28, #0e8d3e);
+  color: #fff;
+}
+
+.coverage-bar span:last-child {
+  background: #bdd9ff;
+  color: #062d7d;
+}
+
+.coverage-legend {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  color: #1f2f4b;
+  font-size: 14px;
+  margin-bottom: 26px;
+}
+
+.coverage-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.coverage-legend i {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.coverage-legend i.local {
+  background: #008236;
+}
+
+.coverage-legend i.grid {
+  background: #8dbfff;
+}
+
+.coverage-legend b {
+  font-weight: 500;
+}
+
+.usage-total-row {
+  border-top: 1px solid #dfe5ed;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-bottom: 18px;
+  padding-top: 18px;
+}
+
+.usage-total-row div {
+  padding: 0 18px;
+}
+
+.usage-total-row div:first-child {
+  padding-left: 0;
+}
+
+.usage-total-row div + div {
+  border-left: 1px solid #dfe5ed;
+}
+
+.usage-total-row p {
+  color: #17233d;
+  font-size: 14px;
+  margin: 0 0 10px;
+}
+
+.usage-total-row strong {
+  color: #081936;
+  font-size: 26px;
+  font-weight: 600;
+}
+
+.usage-total-row .green {
+  color: #087436;
+}
+
+.usage-total-row .blue {
+  color: #0752b5;
+}
+
+.energy-info-note {
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  gap: 12px;
+  align-items: start;
+  background: #edf5ff;
+  border-radius: 7px;
+  color: #0d3d99;
+  padding: 13px 16px;
+}
+
+.energy-info-note span {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #d8e9ff;
+  font-weight: 800;
+  font-size: 12px;
+}
+
+.energy-info-note p {
+  font-size: 13px;
+  line-height: 1.35;
+  margin: 0;
+}
+
+.purchase-summary-card dl {
+  display: grid;
+  gap: 16px;
+  margin: 18px 0 22px;
+}
+
+.purchase-summary-card dl div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
+}
+
+.purchase-summary-card dt {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  color: #263551;
+  font-size: 14px;
+}
+
+.purchase-summary-card dt span {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #e3f3e5;
+  color: #0b7440;
+  font-weight: 900;
+}
+
+.purchase-summary-card dd {
+  color: #081936;
+  font-size: 18px;
+  font-weight: 800;
+  margin: 0;
+  text-align: right;
+}
+
+.purchase-summary-card dd.green {
+  color: #087436;
+}
+
+.purchase-summary-card > a {
+  align-items: center;
+  background: linear-gradient(180deg, #00872e, #006f28);
+  border-radius: 7px;
+  color: #fff;
+  display: flex;
+  font-weight: 800;
+  height: 46px;
+  justify-content: center;
+  text-decoration: none;
+}
+
+.purchase-table {
+  margin-top: 6px;
+}
+
+.purchase-heading,
+.purchase-row {
+  display: grid;
+  grid-template-columns: 42px 1.3fr 1fr 1fr .9fr .8fr;
+  gap: 16px;
+  align-items: center;
+}
+
+.purchase-heading {
+  border-bottom: 1px solid #dfe5ed;
+  color: #34415b;
+  font-size: 13px;
+  padding: 0 0 10px;
+}
+
+.purchase-row {
+  min-height: 50px;
+  border-bottom: 1px solid #edf1f5;
+  color: #17233d;
+  font-size: 14px;
+}
+
+.purchase-row strong {
+  color: #081936;
+  font-weight: 500;
+}
+
+.purchase-row b {
+  color: #087436;
+}
+
+.purchase-row em {
+  background: #dff1db;
+  border-radius: 7px;
+  color: #075c2b;
+  font-style: normal;
+  justify-self: start;
+  padding: 7px 12px;
+}
+
+.purchase-solar-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #e4f5df;
+  position: relative;
+}
+
+.purchase-solar-icon:before {
+  content: '';
+  position: absolute;
+  left: 9px;
+  bottom: 7px;
+  width: 16px;
+  height: 12px;
+  background: #fff8dc;
+  border: 1px solid #1d6ab1;
+}
+
+.purchase-solar-icon:after {
+  content: '';
+  position: absolute;
+  left: 7px;
+  bottom: 19px;
+  width: 20px;
+  height: 11px;
+  background: #1d6ab1;
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+}
+
+.purchase-total-row {
+  display: grid;
+  grid-template-columns: 42px 1.3fr 1fr 1fr .9fr .8fr;
+  gap: 16px;
+  padding: 14px 0 0;
+}
+
+.purchase-total-row strong {
+  color: #081936;
+  font-size: 14px;
+  grid-column: 1 / 4;
+}
+
+.purchase-total-row b {
+  color: #087436;
+  font-size: 16px;
+  grid-column: 4;
+}
+
+@media (max-width: 1100px) {
+  .energy-top-stats,
+  .energy-main-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .buyer-energy-content {
+    padding: 22px 16px;
+  }
+
+  .buyer-energy-head h1 {
+    font-size: 30px;
+  }
+
+  .energy-top-stats article {
+    min-height: 86px;
+  }
+
+  .usage-total-row,
+  .purchase-summary-card dl div {
+    display: grid;
+  }
+
+  .usage-total-row {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .usage-total-row div,
+  .usage-total-row div:first-child {
+    border-left: 0;
+    padding: 0;
+  }
+
+  .purchase-table {
+    overflow-x: auto;
+  }
+
+  .purchase-heading,
+  .purchase-row {
+    min-width: 780px;
+  }
+}

@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import LocationLabel from '../location-label';
 
 const stats = [
   {icon: 'bolt', label: 'Available surplus', value: '86', unit: 'kWh'},
@@ -81,7 +82,7 @@ export default function Seller() {
           <div />
           <div className="seller-top-actions">
             <button className="location-button">
-              <span aria-hidden="true" /> Wollongong, NSW
+              <span aria-hidden="true" /> <LocationLabel />
             </button>
             <button className="bell-button" aria-label="Notifications">
               <span>3</span>

@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import LocationLabel from '../../location-label';
 
 const earningsStats = [
   {tone: 'green', icon: 'Z', label: 'Energy matched', value: '64', unit: 'kWh'},
@@ -34,7 +35,7 @@ export default function SellerWallet() {
           <div />
           <div className="seller-top-actions">
             <button className="location-button">
-              <span aria-hidden="true" /> Wollongong, NSW
+              <span aria-hidden="true" /> <LocationLabel />
             </button>
             <button className="bell-button" aria-label="Notifications">
               <span>1</span>

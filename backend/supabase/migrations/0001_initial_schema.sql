@@ -12,6 +12,8 @@ create table public.profiles (
   address_line text not null,
   suburb text not null,
   postcode text not null,
+  electricity_provider text not null,
+  electricity_plan text not null,
   active_role public.user_role not null default 'buyer',
   can_buy boolean not null default true,
   can_sell boolean not null default false,

@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import LocationLabel from '../../location-label';
 import {useEffect, useMemo, useState} from 'react';
 import type {SellerListing} from '@/lib/supabase/database.types';
 import {loadListings, saveListings, type Listing} from './listing-store';
@@ -476,7 +477,7 @@ function SellerListingsShell({children}: {children: React.ReactNode}) {
           <div />
           <div className="seller-top-actions">
             <button className="location-button">
-              <span aria-hidden="true" /> Wollongong, NSW
+              <span aria-hidden="true" /> <LocationLabel />
             </button>
             <button className="bell-button" aria-label="Notifications">
               <span>3</span>

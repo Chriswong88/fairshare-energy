@@ -68,6 +68,13 @@ Open Supabase SQL Editor and run the full schema from:
 backend/supabase/migrations/0001_initial_schema.sql
 ```
 
+If your Supabase project already had the older schema and signup shows an error about
+`electricity_plan` or `electricity_provider`, run:
+
+```text
+backend/supabase/migrations/0002_add_account_profile_fields.sql
+```
+
 After running it, Supabase Table Editor should show:
 
 ```text
@@ -119,13 +126,13 @@ Restart the dev server after editing `.env.local`.
 Buyer test:
 
 ```powershell
-Invoke-WebRequest -UseBasicParsing -Method POST "http://localhost:3000/api/auth/signup" -ContentType "application/json" -Body '{"email":"buyer.test1@example.com","password":"Password123!","fullName":"Mia Carter","addressLine":"18 Market Street","suburb":"Wollongong","postcode":"2500","activeRole":"buyer"}'
+Invoke-WebRequest -UseBasicParsing -Method POST "http://localhost:3000/api/auth/signup" -ContentType "application/json" -Body '{"email":"buyer.test1@example.com","password":"Password123!","fullName":"Mia Carter","addressLine":"18 Market Street","suburb":"Wollongong","postcode":"2500","electricityProvider":"EnergyAustralia","electricityPlan":"Flexi Plan","activeRole":"buyer"}'
 ```
 
 Seller test:
 
 ```powershell
-Invoke-WebRequest -UseBasicParsing -Method POST "http://localhost:3000/api/auth/signup" -ContentType "application/json" -Body '{"email":"seller.test1@example.com","password":"Password123!","fullName":"Noah Singh","addressLine":"7 Harbour Road","suburb":"North Wollongong","postcode":"2500","activeRole":"seller"}'
+Invoke-WebRequest -UseBasicParsing -Method POST "http://localhost:3000/api/auth/signup" -ContentType "application/json" -Body '{"email":"seller.test1@example.com","password":"Password123!","fullName":"Noah Singh","addressLine":"7 Harbour Road","suburb":"North Wollongong","postcode":"2500","electricityProvider":"Origin Energy","electricityPlan":"Solar Max","activeRole":"seller"}'
 ```
 
 After successful signup, check:

@@ -7,6 +7,8 @@ export type SignupPayload = {
   addressLine: string;
   suburb: string;
   postcode: string;
+  electricityProvider: string;
+  electricityPlan: string;
   activeRole: UserRole;
 };
 
@@ -37,6 +39,8 @@ export function parseSignupPayload(body: unknown): SignupPayload {
     addressLine: requireText(data.addressLine ?? data.address, 'addressLine'),
     suburb: requireText(data.suburb, 'suburb'),
     postcode: requireText(data.postcode, 'postcode'),
+    electricityProvider: requireText(data.electricityProvider, 'electricityProvider'),
+    electricityPlan: requireText(data.electricityPlan, 'electricityPlan'),
     activeRole: activeRoleValue,
   };
 }

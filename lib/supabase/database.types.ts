@@ -10,6 +10,8 @@ export type Profile = {
   address_line: string;
   suburb: string;
   postcode: string;
+  electricity_provider: string;
+  electricity_plan: string;
   active_role: UserRole;
   can_buy: boolean;
   can_sell: boolean;
