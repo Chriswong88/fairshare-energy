@@ -77,40 +77,33 @@ export default function RenterMarketplace() {
   const [viewMode, setViewMode] = useState<'list' | 'map'>('list');
 
   useEffect(() => {
+    let restoredOffers: Offer[] | null = null;
     try {
       const storedRemaining = JSON.parse(window.localStorage.getItem('fairshare-marketplace-remaining') ?? 'null');
       if (storedRemaining && typeof storedRemaining === 'object' && !Array.isArray(storedRemaining)) {
-        setMarketOffers((current) => current.map((offer) => ({
+        restoredOffers = offers.map((offer) => ({
           ...offer,
           availableKwh: Math.max(0, Number(storedRemaining[offer.id] ?? offer.availableKwh)),
-        })));
-        return;
-      }
-
-      const storedPurchases = JSON.parse(window.localStorage.getItem('fairshare-renter-purchases') ?? '[]');
-      if (!Array.isArray(storedPurchases)) return;
-
-      const purchasedByOffer = storedPurchases.reduce<Record<string, number>>((totals, purchase) => {
-        if (purchase && typeof purchase.offerId === 'string' && Number.isFinite(Number(purchase.quantityKwh))) {
-          totals[purchase.offerId] = (totals[purchase.offerId] ?? 0) + Number(purchase.quantityKwh);
+        }));
+      } else {
+        const storedPurchases = JSON.parse(window.localStorage.getItem('fairshare-renter-purchases') ?? '[]');
+        if (Array.isArray(storedPurchases)) {
+          const purchasedByOffer = storedPurchases.reduce<Record<string, number>>((totals, purchase) => {
+            if (purchase && typeof purchase.offerId === 'string' && Number.isFinite(Number(purchase.quantityKwh))) {
+              totals[purchase.offerId] = (totals[purchase.offerId] ?? 0) + Number(purchase.quantityKwh);
+            }
+            return totals;
+          }, {});
+          if (Object.keys(purchasedByOffer).length) {
+            restoredOffers = offers.map((offer) => ({...offer, availableKwh: Math.max(0, offer.availableKwh - (purchasedByOffer[offer.id] ?? 0))}));
+            window.localStorage.setItem('fairshare-marketplace-remaining', JSON.stringify(Object.fromEntries(restoredOffers.map((offer) => [offer.id, offer.availableKwh]))));
+          }
         }
-        return totals;
-      }, {});
-
-      if (!Object.keys(purchasedByOffer).length) return;
-
-      const restoredOffers = offers.map((offer) => ({
-        ...offer,
-        availableKwh: Math.max(0, offer.availableKwh - (purchasedByOffer[offer.id] ?? 0)),
-      }));
-      setMarketOffers(restoredOffers);
-      window.localStorage.setItem(
-        'fairshare-marketplace-remaining',
-        JSON.stringify(Object.fromEntries(restoredOffers.map((offer) => [offer.id, offer.availableKwh]))),
-      );
+      }
     } catch {
       // Keep the original listing amounts if browser storage is unavailable.
     }
+    if (restoredOffers) Promise.resolve().then(() => setMarketOffers(restoredOffers!));
   }, []);
 
   const visibleOffers = useMemo(

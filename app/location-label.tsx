@@ -21,7 +21,9 @@ export default function LocationLabel() {
   const [location, setLocation] = useState('Wollongong, NSW');
 
   useEffect(() => {
-    setLocation(window.localStorage.getItem('fairshare.location') ?? 'Wollongong, NSW');
+    Promise.resolve().then(() => {
+      setLocation(window.localStorage.getItem('fairshare.location') ?? 'Wollongong, NSW');
+    });
   }, []);
 
   return <>{location}</>;
