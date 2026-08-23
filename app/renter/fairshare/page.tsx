@@ -13,9 +13,12 @@ export default function BuyerEnergyPage() {
   const [month,setMonth]=useState(()=>new Date().toISOString().slice(0,7));
   const [data,setData]=useState<EnergyData>(()=>emptyData());
   const [message,setMessage]=useState('');
+  const [cancelTarget,setCancelTarget]=useState<Purchase|null>(null);
+  const [cancelPending,setCancelPending]=useState(false);
   const months=useMemo(()=>monthOptions(),[]),s=data.summary,hasData=s.totalUsageKwh>0;
+  const monthLabel=months.find(item=>item.value===month)?.label??month;
   useEffect(()=>{let cancelled=false;Promise.resolve().then(()=>{if(!cancelled)setData(localData(month));});fetch(`/api/buyer/energy?month=${month}`).then(async r=>{if(!r.ok)throw new Error('local');const value=await r.json() as EnergyData;if(!cancelled)setData(value);}).catch(()=>undefined);return()=>{cancelled=true};},[month]);
-  const cancelPurchase=async(p:Purchase)=>{if(!window.confirm(`Cancel your energy subscription with ${p.seller_name}?`))return;let backend=false;if(!p.id.startsWith('local-')){const response=await fetch(`/api/buyer/energy/${p.id}`,{method:'DELETE'});backend=response.ok;}if(!backend){const local=readLocal().filter(item=>item.id!==p.id&&item.localId!==p.id);localStorage.setItem('fairshare-renter-purchases',JSON.stringify(local));setData(localData(month));}else{const response=await fetch(`/api/buyer/energy?month=${month}`);if(response.ok)setData(await response.json() as EnergyData);}setMessage('Subscription cancelled.');};
+  const cancelPurchase=async()=>{const p=cancelTarget;if(!p)return;setCancelPending(true);let backend=false;if(!p.id.startsWith('local-')){const response=await fetch(`/api/buyer/energy/${p.id}`,{method:'DELETE'});backend=response.ok;}if(!backend){const local=readLocal().filter(item=>item.id!==p.id&&item.localId!==p.id);localStorage.setItem('fairshare-renter-purchases',JSON.stringify(local));setData(localData(month));}else{const response=await fetch(`/api/buyer/energy?month=${month}`);if(response.ok)setData(await response.json() as EnergyData);}setCancelPending(false);setCancelTarget(null);setMessage('Subscription cancelled.');};
   return (
     <main className="buyer-dashboard-page buyer-energy-page">
       <BuyerSidebar />
@@ -65,7 +68,11 @@ export default function BuyerEnergyPage() {
             <article className="energy-month-card">
               <div className="energy-card-title">
                 <h2>Your energy this month</h2>
-                <label className="energy-month-select"><select aria-label="Choose energy month" value={month} onChange={e=>setMonth(e.target.value)}>{months.map(item=><option key={item.value} value={item.value}>{item.label}</option>)}</select><span className="month-chevron" aria-hidden="true" /></label>
+                <label className="energy-month-select">
+                  <strong>{monthLabel}</strong>
+                  <select aria-label="Choose energy month" value={month} onChange={e=>setMonth(e.target.value)}>{months.map(item=><option key={item.value} value={item.value}>{item.label}</option>)}</select>
+                  <span className="month-chevron" aria-hidden="true" />
+                </label>
               </div>
 
               {hasData?<div className="coverage-bar" style={{gridTemplateColumns:`${s.coveragePercent}fr ${100-s.coveragePercent}fr`}}><span>{s.coveragePercent?`${s.coveragePercent}%`:''}</span><span>{s.coveragePercent<100?`${100-s.coveragePercent}%`:''}</span></div>:<div className="coverage-bar empty"><span>0%</span></div>}
@@ -140,7 +147,9 @@ export default function BuyerEnergyPage() {
                   <b>{kwh(Number(p.quantity_kwh))}</b>
                   <b>{Number(p.price_per_kwh_cents).toFixed(1)}c/kWh</b>
                   <em>Matched</em>
-                  <button className="cancel-purchase-button" onClick={()=>cancelPurchase(p)}>Cancel</button>
+                  <button className="cancel-purchase-button" type="button" onClick={()=>setCancelTarget(p)} aria-label={`Cancel subscription with ${p.seller_name}`}>
+                    <span aria-hidden="true">×</span> Cancel
+                  </button>
                 </div>
               ))}
               {!data.purchases.length&&<div className="purchase-row"><span/><strong>No purchases this month</strong></div>}
@@ -152,6 +161,18 @@ export default function BuyerEnergyPage() {
           </section>
         </div>
       </section>
+      {cancelTarget&&<div className="subscription-modal-backdrop" onMouseDown={()=>!cancelPending&&setCancelTarget(null)}>
+        <section className="subscription-cancel-modal" role="dialog" aria-modal="true" aria-labelledby="cancel-subscription-title" onMouseDown={event=>event.stopPropagation()}>
+          <span className="subscription-warning" aria-hidden="true">!</span>
+          <p className="kicker">CANCEL SUBSCRIPTION</p>
+          <h2 id="cancel-subscription-title">Stop buying energy from {cancelTarget.seller_name}?</h2>
+          <p>Your {kwh(Number(cancelTarget.quantity_kwh))} subscription will be removed from My Energy and your monthly totals will be recalculated.</p>
+          <div className="subscription-modal-actions">
+            <button className="keep-subscription-button" type="button" disabled={cancelPending} onClick={()=>setCancelTarget(null)}>Keep subscription</button>
+            <button className="confirm-subscription-cancel" type="button" disabled={cancelPending} onClick={cancelPurchase}>{cancelPending?'Cancelling...':'Yes, cancel'}</button>
+          </div>
+        </section>
+      </div>}
     </main>
   );
 }
