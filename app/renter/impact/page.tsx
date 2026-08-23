@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import {useEffect, useState} from 'react';
 import LocationLabel from '../../location-label';
+import UserName, {UserInitials} from '../../user-identity';
 import '../../buyer-dashboard.css';
 import '../../buyer-impact.css';
 
@@ -231,9 +232,9 @@ function BuyerSidebar() {
       </Link>
 
       <div className="buyer-person">
-        <span>BL</span>
+        <span><UserInitials fallback="BL" /></span>
         <div>
-          <strong>Bob Lee</strong>
+          <strong><UserName fallback="Bob Lee" /></strong>
           <small>Energy Buyer</small>
         </div>
       </div>

@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import UserName from '../../user-identity';
 import LocationLabel from '../../location-label';
 import DownloadStatementButton from './download-statement-button';
 
@@ -247,7 +248,7 @@ function SellerSidebar() {
       <div className="seller-person">
         <span className="person-bolt" />
         <div>
-          <strong>Alice Chen</strong>
+          <strong><UserName fallback="Alice Chen" /></strong>
           <small>Solar Seller</small>
         </div>
       </div>

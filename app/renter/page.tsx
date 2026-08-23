@@ -5,6 +5,7 @@ import {usePathname} from 'next/navigation';
 import {useEffect, useState} from 'react';
 import type {ElectricityPlanInfo} from '@/lib/electricity-plans';
 import LocationLabel from '../location-label';
+import UserName, {UserInitials} from '../user-identity';
 import '../buyer-dashboard.css';
 
 const usageDays = [
@@ -118,7 +119,7 @@ export function Portal({
         </nav>
         <div>
           <small>{role}</small>
-          <strong>{role === 'RENTER PORTAL' ? 'Jamie Reid' : 'Nguyen household'}</strong>
+          <strong><UserName fallback={role === 'RENTER PORTAL' ? 'Buyer' : 'Seller'} /></strong>
           <Link href={switchHref}>{switchText} -&gt;</Link>
         </div>
       </aside>
@@ -183,7 +184,7 @@ export default function Renter() {
 
         <div className="buyer-dashboard-content">
           <div className="buyer-greeting-row">
-            <h1>Good morning, {firstName(summary.fullName)}</h1>
+            <h1>Hi, <UserName fallback={firstName(summary.fullName)} first /></h1>
             <span className="buyer-plan-pill">Renter plan</span>
           </div>
 
@@ -395,9 +396,9 @@ function BuyerSidebar() {
       </Link>
 
       <div className="buyer-person">
-        <span>BL</span>
+        <span><UserInitials fallback="BL" /></span>
         <div>
-          <strong>Bob Lee</strong>
+          <strong><UserName fallback="Bob Lee" /></strong>
           <small>Energy Buyer</small>
         </div>
       </div>

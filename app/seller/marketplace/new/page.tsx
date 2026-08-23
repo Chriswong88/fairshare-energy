@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import UserName from '../../../user-identity';
 import {useState} from 'react';
 import LocationLabel from '../../../location-label';
 
@@ -299,7 +300,7 @@ function SellerListingShell({children}: {children: React.ReactNode}) {
         <div className="seller-person">
           <span className="person-bolt" />
           <div>
-            <strong>Alice Chen</strong>
+            <strong><UserName fallback="Alice Chen" /></strong>
             <small>Solar Seller</small>
           </div>
         </div>

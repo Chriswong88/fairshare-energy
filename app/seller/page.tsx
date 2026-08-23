@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import UserName from '../user-identity';
 import {useEffect, useMemo, useState} from 'react';
 import LocationLabel from '../location-label';
 
@@ -45,7 +46,7 @@ export default function Seller() {
         <div className="seller-person">
           <span className="person-bolt" />
           <div>
-            <strong>Alice Chen</strong>
+            <strong><UserName fallback="Alice Chen" /></strong>
             <small>Solar Seller</small>
           </div>
         </div>
@@ -99,7 +100,7 @@ export default function Seller() {
           <div className="seller-greeting-row">
             <div>
               <span className="greeting-sun" />
-              <h1>Good morning, {dashboard?.profile?.full_name?.split(' ')[0] ?? 'there'}</h1>
+              <h1>Hi, <UserName first fallback={dashboard?.profile?.full_name?.split(' ')[0] ?? 'there'} /></h1>
             </div>
             <Link className="offer-cta" href="/seller/marketplace/new">
               <span aria-hidden="true" /> Create new offer
