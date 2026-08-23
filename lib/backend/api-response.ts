@@ -19,6 +19,14 @@ export function unauthorized(message = 'Authentication required') {
   return NextResponse.json({error: message}, {status: 401});
 }
 
+export function forbidden(message = 'You do not have permission to perform this action') {
+  return NextResponse.json({error: message}, {status: 403});
+}
+
+export function notFound(message = 'Resource not found') {
+  return NextResponse.json({error: message}, {status: 404});
+}
+
 export function serverError(message = 'Unexpected server error') {
   return NextResponse.json({error: message}, {status: 500});
 }
