@@ -49,42 +49,37 @@ export default function NewListing() {
   const publish = async () => {
     setSaving(true);
     setError('');
-
-    const response = await fetch('/api/listings', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({
-        quantityKwh: amount,
-        pricePerKwhCents: 12,
-        listingType: 'sale',
-        availableFrom: startDate,
-        availableUntil: endDate,
-      }),
-    });
-
-    if (response.ok) {
-      setPublished(true);
-      return;
-    }
-
-    if (response.status !== 401) {
-      const data = (await response.json().catch(() => null)) as {error?: string} | null;
-      setError(data?.error ?? 'Could not publish listing.');
-      setSaving(false);
-      return;
-    }
-
     const listing: Listing = {
       id: Date.now(),
       title: `${amount.toFixed(1)} kWh for sale`,
       detail: `12.0c/kWh - ${periodLabel}`,
       result: '0 kWh sold',
       kind: 'sale',
+      quantityKwh: amount,
+      pricePerKwhCents: 12,
+      availableFrom: startDate,
+      availableUntil: endDate,
+      status: 'active',
+      supportPreference: support as Listing['supportPreference'],
+      donationPercentage: donate ? 10 : 0,
     };
-
-    saveListings([listing, ...loadListings()]);
-    setSaving(false);
-    setPublished(true);
+    try {
+      const response = await fetch('/api/listings', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          quantityKwh: amount, pricePerKwhCents: 12, listingType: 'sale',
+          availableFrom: startDate, availableUntil: endDate,
+          supportPreference: support, donationPercentage: donate ? 10 : 0,
+        }),
+      });
+      if (!response.ok) saveListings([listing, ...loadListings()]);
+    } catch {
+      saveListings([listing, ...loadListings()]);
+    } finally {
+      setSaving(false);
+      setPublished(true);
+    }
   };
 
   if (published) {

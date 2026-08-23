@@ -7,6 +7,8 @@ import './seller-dashboard.css';
 import './seller-marketplace.css';
 import './create-listing.css';
 import './my-listings.css';
+import './edit-listing.css';
+import './listing-summary.css';
 import './earnings.css';
 import './impact.css';
 import './marketplace.css';

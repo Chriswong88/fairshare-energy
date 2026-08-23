@@ -63,6 +63,10 @@ POST /api/auth/signup
 POST /api/auth/login
 POST /api/auth/logout
 GET  /api/me
+GET, POST /api/listings
+GET, PATCH, DELETE /api/listings/:id
+GET, PATCH /api/seller/profile
+GET /api/seller/dashboard
 ```
 
 Signup creates one Supabase Auth user, one `profiles` row, and both buyer/seller role profile rows. The selected signup role becomes `active_role`, but the same account can use both portals.

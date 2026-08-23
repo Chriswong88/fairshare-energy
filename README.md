@@ -66,6 +66,7 @@ Open Supabase SQL Editor and run the full schema from:
 
 ```text
 backend/supabase/migrations/0001_initial_schema.sql
+backend/supabase/migrations/0002_seller_listing_system.sql
 ```
 
 If your Supabase project already had the older schema and signup shows an error about
@@ -117,6 +118,11 @@ POST http://localhost:3000/api/auth/signup
 POST http://localhost:3000/api/auth/login
 POST http://localhost:3000/api/auth/logout
 GET  http://localhost:3000/api/me
+GET  http://localhost:3000/api/listings
+POST http://localhost:3000/api/listings
+GET/PATCH/DELETE http://localhost:3000/api/listings/:id
+GET/PATCH http://localhost:3000/api/seller/profile
+GET  http://localhost:3000/api/seller/dashboard
 ```
 
 Restart the dev server after editing `.env.local`.

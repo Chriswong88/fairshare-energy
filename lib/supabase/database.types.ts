@@ -41,11 +41,14 @@ export type SellerListing = {
   id: string;
   seller_id: string;
   quantity_kwh: number;
+  sold_quantity_kwh: number;
   price_per_kwh_cents: number | null;
   listing_type: ListingType;
   status: ListingStatus;
   available_from: string | null;
   available_until: string | null;
+  support_preference: 'renters' | 'low-income' | 'none';
+  donation_percentage: number;
   created_at: string;
   updated_at: string;
 };

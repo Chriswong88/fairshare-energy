@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import LocationLabel from '../../location-label';
+import DownloadStatementButton from './download-statement-button';
 
 const earningsStats = [
   {tone: 'green', icon: 'Z', label: 'Energy matched', value: '64', unit: 'kWh'},
@@ -28,6 +29,42 @@ const recentMatches = [
 export default function SellerWallet() {
   return (
     <main className="seller-dashboard-page earnings-page">
+      <style>{`
+        .earnings-content-grid{display:grid!important;grid-template-columns:minmax(0,1fr) 300px!important;gap:20px;align-items:start}
+        .earnings-content-grid,.earnings-main-column,.earnings-chart-card,.earnings-chart{min-width:0}
+        .earnings-main-column{display:contents}
+        .earnings-chart-card{width:100%;overflow:hidden}
+        .earnings-chart-card{grid-column:1;grid-row:1}
+        .bill-credit-card{grid-column:2;grid-row:1}
+        .recent-matches-card{grid-column:1/-1;grid-row:2;width:100%;min-width:0}
+        .earnings-footnote{grid-column:1/-1;grid-row:3}
+        .earnings-chart-title{min-width:0}
+        .earnings-chart-title>div{min-width:0;flex-wrap:wrap;justify-content:flex-end;row-gap:10px}
+        .earnings-chart{width:100%;overflow:hidden}
+        .chart-lines{display:block;max-width:100%}
+        .bill-credit-card{min-width:0;width:100%;position:static}
+        .earnings-metric-grid article,.earnings-metric-grid article>div{min-width:0}
+        .earnings-metric-grid strong{display:block;font-size:clamp(21px,2vw,28px);white-space:nowrap}
+        .download-statement-button,.bill-credits-button{display:flex;align-items:center;justify-content:center;text-decoration:none;box-sizing:border-box;cursor:pointer}
+        .download-statement-button:disabled{cursor:wait;opacity:.72}.statement-download-error{display:block;color:#a43a2b;font-size:12px;line-height:1.35;margin:-4px 0 12px}
+        @media(max-width:1080px){
+          .earnings-content-grid{grid-template-columns:1fr!important}
+          .earnings-chart-card{grid-column:1;grid-row:1}
+          .bill-credit-card{grid-column:1;grid-row:2;max-width:none}
+          .recent-matches-card{grid-column:1;grid-row:3}
+          .earnings-footnote{grid-column:1;grid-row:4}
+        }
+        @media(max-width:760px){
+          .earnings-chart-title>div{justify-content:flex-start}
+          .earnings-chart{height:220px;padding-left:30px}
+          .chart-lines,.chart-bars{left:40px;right:8px;width:calc(100% - 48px)}
+          .chart-months{left:40px;right:8px}
+        }
+        @media(max-width:520px){
+          .earnings-chart-card{overflow-x:auto}
+          .earnings-chart{min-width:500px}
+        }
+      `}</style>
       <SellerSidebar />
 
       <section className="seller-dashboard-main">
@@ -81,32 +118,32 @@ export default function SellerWallet() {
                       <span key={line}>{line}</span>
                     ))}
                   </div>
-                  <svg className="chart-lines" viewBox="0 0 600 180" aria-hidden="true">
+                  <svg className="chart-lines" viewBox="0 0 600 180" preserveAspectRatio="none" aria-hidden="true">
                     <polyline
                       className="community-line"
-                      points="34,135 141,126 248,80 355,58 462,25 569,72"
+                      points="34,133.5 141,118.5 248,73.5 355,45 462,13.5 569,60"
                     />
                     <polyline
                       className="feed-line"
-                      points="34,160 141,154 248,141 355,136 462,124 569,132"
+                      points="34,156 141,150 248,138 355,132 462,121.5 569,129"
                     />
                     {[
-                      [34, 135],
-                      [141, 126],
-                      [248, 80],
-                      [355, 58],
-                      [462, 25],
-                      [569, 72],
+                      [34, 133.5],
+                      [141, 118.5],
+                      [248, 73.5],
+                      [355, 45],
+                      [462, 13.5],
+                      [569, 60],
                     ].map(([x, y]) => (
                       <circle className="community-dot" cx={x} cy={y} r="5" key={`${x}-${y}`} />
                     ))}
                     {[
-                      [34, 160],
-                      [141, 154],
-                      [248, 141],
-                      [355, 136],
-                      [462, 124],
-                      [569, 132],
+                      [34, 156],
+                      [141, 150],
+                      [248, 138],
+                      [355, 132],
+                      [462, 121.5],
+                      [569, 129],
                     ].map(([x, y]) => (
                       <circle className="feed-dot" cx={x} cy={y} r="5" key={`${x}-${y}`} />
                     ))}
@@ -116,9 +153,9 @@ export default function SellerWallet() {
                       <div key={item.month}>
                         <span
                           className="bar community"
-                          style={{height: `${item.community * 12}px`}}
+                          style={{height: `${item.community * 15}px`}}
                         />
-                        <span className="bar feed" style={{height: `${item.feedIn * 12}px`}} />
+                        <span className="bar feed" style={{height: `${item.feedIn * 15}px`}} />
                       </div>
                     ))}
                   </div>
@@ -182,12 +219,10 @@ export default function SellerWallet() {
                   <dd><span className="processing-pill">Processing</span></dd>
                 </div>
               </dl>
-              <button className="download-statement-button" type="button">
-                Download statement
-              </button>
-              <button className="bill-credits-button" type="button">
+              <DownloadStatementButton className="download-statement-button" />
+              <Link className="bill-credits-button" href="/seller/wallet/bill-credits">
                 View bill credits
-              </button>
+              </Link>
             </aside>
           </div>
         </div>
