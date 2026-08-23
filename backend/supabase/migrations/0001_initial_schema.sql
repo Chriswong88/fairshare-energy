@@ -44,6 +44,7 @@ create table public.seller_listings (
   price_per_kwh_cents integer,
   listing_type public.listing_type not null,
   status public.listing_status not null default 'active',
+  available_from timestamptz,
   available_until timestamptz,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
