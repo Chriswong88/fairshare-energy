@@ -74,6 +74,7 @@ export default function Home() {
       const profile = data.profile;
       const location = getDisplayLocationFromAddress(profile?.suburb ?? form.suburb, profile?.postcode ?? form.postcode);
       window.localStorage.setItem('fairshare.location', location);
+      window.dispatchEvent(new Event('fairshare-location-change'));
       window.localStorage.setItem('fairshare.activeRole', role);
 
       if (profile?.full_name ?? form.fullName) {

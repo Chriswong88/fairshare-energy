@@ -218,7 +218,7 @@ function BuyerSidebar() {
         <Link href="/renter/payment">
           <span>B</span> Bills & Savings
         </Link>
-        <Link href="/renter/fairshare">
+        <Link href="/renter/impact">
           <span>I</span> Impact
         </Link>
       </nav>

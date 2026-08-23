@@ -15,7 +15,7 @@ export default function DownloadStatementButton({className}: {className: string}
       const contentType = response.headers.get('content-type') ?? '';
 
       if (!response.ok || !contentType.includes('application/pdf')) {
-        const result = await response.json().catch(() => ({error: 'Could not create the PDF statement.'}));
+        const result = (await response.json().catch(() => ({error: 'Could not create the PDF statement.'}))) as {error?: string};
         throw new Error(result.error || 'Could not create the PDF statement.');
       }
 
