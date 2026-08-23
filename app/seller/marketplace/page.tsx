@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import {useEffect, useMemo, useState} from 'react';
 import type {SellerListing} from '@/lib/supabase/database.types';
-import {loadListings, saveListings, type Listing} from './listing-store';
+import {DEFAULT_LISTINGS, loadListings, saveListings, type Listing} from './listing-store';
 
 type ListingCard = {
   id: number | string;
@@ -36,7 +36,7 @@ const completedListings: ListingCard[] = [
 ];
 
 export default function SellerMarketplace() {
-  const [listings, setListings] = useState(() => loadListings());
+  const [listings, setListings] = useState(DEFAULT_LISTINGS);
   const [databaseListings, setDatabaseListings] = useState<SellerListing[] | null>(null);
   const [confirmId, setConfirmId] = useState<number | string | null>(null);
   const [notice, setNotice] = useState('');
@@ -44,6 +44,8 @@ export default function SellerMarketplace() {
 
   useEffect(() => {
     let cancelled = false;
+
+    setListings(loadListings());
 
     fetch('/api/listings')
       .then(async (response) => {
