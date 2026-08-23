@@ -1,6 +1,6 @@
 'use client';
 
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 
 export function getDisplayLocationFromAddress(suburb?: string, postcode?: string) {
   const cleanSuburb = suburb?.trim();
@@ -18,13 +18,11 @@ export function getDisplayLocationFromAddress(suburb?: string, postcode?: string
 }
 
 export default function LocationLabel() {
-  const [location] = useState(() => {
-    if (typeof window === 'undefined') {
-      return 'Wollongong, NSW';
-    }
+  const [location, setLocation] = useState('Wollongong, NSW');
 
-    return window.localStorage.getItem('fairshare.location') ?? 'Wollongong, NSW';
-  });
+  useEffect(() => {
+    setLocation(window.localStorage.getItem('fairshare.location') ?? 'Wollongong, NSW');
+  }, []);
 
   return <>{location}</>;
 }
