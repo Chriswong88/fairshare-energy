@@ -75,9 +75,6 @@ export default function SellerWallet() {
             <button className="location-button">
               <span aria-hidden="true" /> <LocationLabel />
             </button>
-            <button className="bell-button" aria-label="Notifications">
-              <span>1</span>
-            </button>
           </div>
         </header>
 

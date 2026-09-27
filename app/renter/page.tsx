@@ -172,9 +172,6 @@ export default function Renter() {
           <button className="buyer-location-button">
             <span aria-hidden="true" /> <LocationLabel />
           </button>
-          <button className="buyer-bell-button" aria-label="Notifications">
-            <span>3</span>
-          </button>
         </header>
 
         <div className="buyer-dashboard-content">

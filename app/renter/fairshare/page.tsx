@@ -30,9 +30,6 @@ export default function BuyerEnergyPage() {
           <button className="buyer-location-button">
             <span aria-hidden="true" /> <LocationLabel />
           </button>
-          <button className="buyer-bell-button" aria-label="Notifications">
-            <span>2</span>
-          </button>
         </header>
 
         <div className="buyer-energy-content">

@@ -73,9 +73,6 @@ export default function SellerImpact() {
             <button className="location-button">
               <span aria-hidden="true" /> <LocationLabel />
             </button>
-            <button className="bell-button" aria-label="Notifications">
-              <span>2</span>
-            </button>
           </div>
         </header>
 

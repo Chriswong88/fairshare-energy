@@ -333,9 +333,6 @@ function SellerListingShell({children}: {children: React.ReactNode}) {
             <button className="location-button">
               <span aria-hidden="true" /> <LocationLabel />
             </button>
-            <button className="bell-button" aria-label="Notifications">
-              <span>2</span>
-            </button>
           </div>
         </header>
         {children}

@@ -88,9 +88,6 @@ export default function Seller() {
             <button className="location-button">
               <span aria-hidden="true" /> <LocationLabel />
             </button>
-            <button className="bell-button" aria-label="Notifications">
-              <span>3</span>
-            </button>
           </div>
         </header>
 
