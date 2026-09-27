@@ -13,7 +13,6 @@ await cp(join(root, 'app'), join(staging, 'app'), {
 await cp(join(root, 'lib'), join(staging, 'lib'), {recursive: true});
 await cp(join(root, 'public'), join(staging, 'public'), {recursive: true});
 await cp(join(root, 'tsconfig.json'), join(staging, 'tsconfig.json'));
-await cp(join(root, 'next-env.d.ts'), join(staging, 'next-env.d.ts'));
 const layoutPath = join(staging, 'app', 'layout.tsx');
 let layout = await readFile(layoutPath, 'utf8');
 layout = layout
