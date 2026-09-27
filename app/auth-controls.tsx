@@ -8,7 +8,7 @@ export default function AuthControls() {
   const pathname = usePathname();
   const router = useRouter();
   const [signingOut, setSigningOut] = useState(false);
-  const isDashboard = pathname.startsWith('/renter') || pathname.startsWith('/seller');
+  const isDashboard = /^\/(renter|seller)(?:\/|$)/.test(pathname);
 
   if (!isDashboard) return null;
 
