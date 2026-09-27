@@ -48,6 +48,7 @@ export function parseSignupPayload(body: unknown): SignupPayload {
 export type LoginPayload = {
   email: string;
   password: string;
+  activeRole: UserRole;
 };
 
 export function parseLoginPayload(body: unknown): LoginPayload {
@@ -56,9 +57,15 @@ export function parseLoginPayload(body: unknown): LoginPayload {
   }
 
   const data = body as Record<string, unknown>;
+  const activeRoleValue = requireText(data.activeRole ?? data.role, 'activeRole');
+
+  if (!isUserRole(activeRoleValue)) {
+    throw new Error('activeRole must be buyer or seller.');
+  }
 
   return {
     email: requireText(data.email, 'email').toLowerCase(),
     password: requireText(data.password, 'password'),
+    activeRole: activeRoleValue,
   };
 }

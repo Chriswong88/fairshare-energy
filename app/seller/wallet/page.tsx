@@ -271,9 +271,6 @@ function SellerSidebar() {
         </Link>
       </nav>
 
-      <Link className="seller-role-switch" href="/renter">
-        Switch to buyer
-      </Link>
     </aside>
   );
 }

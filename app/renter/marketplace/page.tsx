@@ -529,9 +529,6 @@ function BuyerSidebar() {
         </Link>
       </nav>
 
-      <Link className="buyer-role-switch" href="/seller">
-        Switch to seller
-      </Link>
     </aside>
   );
 }

@@ -70,9 +70,6 @@ export default function Seller() {
           </Link>
         </nav>
 
-        <Link className="seller-role-switch" href="/renter">
-          Switch to buyer
-        </Link>
 
         <div className="sidebar-illustration" aria-hidden="true">
           <span className="cloud cloud-one" />

@@ -324,9 +324,6 @@ function SellerListingShell({children}: {children: React.ReactNode}) {
           </Link>
         </nav>
 
-        <Link className="seller-role-switch" href="/renter">
-          Switch to buyer
-        </Link>
       </aside>
 
       <section className="seller-dashboard-main">

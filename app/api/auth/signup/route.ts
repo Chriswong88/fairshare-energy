@@ -40,16 +40,14 @@ export async function POST(request: NextRequest) {
     electricity_provider: payload.electricityProvider,
     electricity_plan: payload.electricityPlan,
     active_role: payload.activeRole,
-    can_buy: true,
-    can_sell: true,
+    can_buy: payload.activeRole === 'buyer',
+    can_sell: payload.activeRole === 'seller',
   });
 
-  const profileRows = [
-    admin.from('buyer_profiles').insert({user_id: userId}),
-    admin.from('seller_profiles').insert({user_id: userId}),
-  ];
-  const [buyerResult, sellerResult] = await Promise.all(profileRows);
-  const setupError = profileError ?? buyerResult.error ?? sellerResult.error;
+  const roleProfileResult = payload.activeRole === 'buyer'
+    ? await admin.from('buyer_profiles').insert({user_id: userId})
+    : await admin.from('seller_profiles').insert({user_id: userId});
+  const setupError = profileError ?? roleProfileResult.error;
 
   if (setupError) {
     await admin.auth.admin.deleteUser(userId);
@@ -85,8 +83,8 @@ export async function POST(request: NextRequest) {
       electricity_provider: payload.electricityProvider,
       electricity_plan: payload.electricityPlan,
       active_role: payload.activeRole,
-      can_buy: true,
-      can_sell: true,
+      can_buy: payload.activeRole === 'buyer',
+      can_sell: payload.activeRole === 'seller',
     },
   });
 

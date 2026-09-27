@@ -5,6 +5,7 @@ import {useMemo, useState} from 'react';
 import {useRouter} from 'next/navigation';
 import {apiFetch} from '@/lib/api-client';
 import {getDisplayLocationFromAddress} from './location-label';
+import BrandMark from './brand-mark';
 
 type Role = 'buyer' | 'seller';
 type Mode = 'signup' | 'login';
@@ -33,7 +34,7 @@ export default function AccountPage({role, mode}: {role: Role; mode: Mode}) {
       const response = await apiFetch(isSignup ? '/api/auth/signup' : '/api/auth/login', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(isSignup ? {...form, activeRole: role} : {email: form.email, password: form.password}),
+        body: JSON.stringify(isSignup ? {...form, activeRole: role} : {email: form.email, password: form.password, activeRole: role}),
       });
       const data = (await response.json().catch(() => ({}))) as AuthResponse;
       if (!response.ok) throw new Error(data.error ?? 'Could not complete request.');
@@ -57,7 +58,7 @@ export default function AccountPage({role, mode}: {role: Role; mode: Mode}) {
   return (
     <main className="landing-page">
       <header className="landing-nav">
-        <Link href="/" className="landing-brand"><span className="landing-brand-mark" /><span><b>Fair<span>Share</span></b><small>Local energy. Shared future.</small></span></Link>
+        <Link href="/" className="landing-brand"><BrandMark className="landing-brand-mark" /><span><b>Fair<span>Share</span></b><small>Local energy. Shared future.</small></span></Link>
         <div className="landing-location"><span aria-hidden="true" /> {displayLocation}</div>
       </header>
       <section className="landing-shell">
@@ -65,10 +66,6 @@ export default function AccountPage({role, mode}: {role: Role; mode: Mode}) {
           <p className="landing-kicker">Wollongong community energy</p>
           <h1>Buy or share local solar with FairShare.</h1>
           <p>Connect with local energy, track your savings, and manage everything from one simple account.</p>
-          <div className="landing-benefits">
-            <article><span>B</span><strong>Energy buyer</strong><p>Buy matched local solar, track savings, and manage bills.</p></article>
-            <article><span>S</span><strong>Solar seller</strong><p>List surplus energy, view matches, and follow earnings.</p></article>
-          </div>
         </div>
         <section className="account-panel">
           <div className="account-heading"><p>{roleLabel} account</p><h2>{isSignup ? `Create your ${role} account` : `${roleLabel} log in`}</h2></div>

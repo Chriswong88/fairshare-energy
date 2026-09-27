@@ -6,7 +6,7 @@ import {Portal} from '../../../renter/page';
 const households=[['M. Okafor','Hardship · Renter','8.10','2.0 kWh'],['Jamie Reid','Renter · Apartment','6.84','1.2 kWh'],['L. Chen','Apartment · Senior','5.92','0.8 kWh']];
 export default function ViewMatch(){
   const [approved,setApproved]=useState(false);
-  return <Portal role="SOLAR SELLER" switchHref="/renter" switchText="Switch to renter">
+  return <Portal role="SOLAR SELLER">
     <div className="subpage-head"><Link href="/seller/marketplace">← Back to listings</Link><p className="kicker">FAIRSHARE MATCH</p><h1>Your donation match</h1><p>See who will receive the 4.0 kWh donation and why they were prioritised.</p></div>
     {approved&&<div className="notice">✓ Allocation approved. Recipients will receive the energy when the demo interval closes.</div>}
     <section className="match-overview"><article><span>ENERGY OFFERED</span><b>4.0 kWh</b></article><article><span>ELIGIBLE REQUESTS</span><b>4 households</b></article><article><span>ALLOCATION TIME</span><b>4:00pm today</b></article></section>

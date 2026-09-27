@@ -84,13 +84,9 @@ const fallbackPlanInfo: ElectricityPlanInfo = {
 export function Portal({
   children,
   role,
-  switchHref,
-  switchText,
 }: {
   children: React.ReactNode;
   role: string;
-  switchHref: string;
-  switchText: string;
 }) {
   const path = usePathname();
   const base = role === 'RENTER PORTAL' ? '/renter' : '/seller';
@@ -121,13 +117,11 @@ export function Portal({
         <div>
           <small>{role}</small>
           <strong><UserName fallback={role === 'RENTER PORTAL' ? 'Buyer' : 'Seller'} /></strong>
-          <Link href={switchHref}>{switchText} -&gt;</Link>
         </div>
       </aside>
       <section className="portal-main">
         <header>
           <span className="demo-dot">Demo mode</span>
-          <Link href="/">Choose another role</Link>
         </header>
         <div className="portal-content">{children}</div>
       </section>
@@ -422,9 +416,6 @@ function BuyerSidebar() {
         </Link>
       </nav>
 
-      <Link className="buyer-role-switch" href="/seller">
-        Switch to seller
-      </Link>
     </aside>
   );
 }
