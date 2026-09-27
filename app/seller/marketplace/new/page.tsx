@@ -1,4 +1,5 @@
 'use client';
+import {apiFetch} from '@/lib/api-client';
 
 import Link from 'next/link';
 import UserName from '../../../user-identity';
@@ -50,7 +51,7 @@ export default function NewListing() {
     setSaving(true);
     setError('');
     try {
-      const response = await fetch('/api/listings', {
+      const response = await apiFetch('/api/listings', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({

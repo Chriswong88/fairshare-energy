@@ -1,4 +1,5 @@
 'use client';
+import {apiFetch} from '@/lib/api-client';
 
 import Link from 'next/link';
 import {useEffect, useState} from 'react';
@@ -61,7 +62,7 @@ export default function BuyerImpactPage() {
   useEffect(() => {
     let cancelled = false;
 
-    fetch('/api/buyer/impact', {cache: 'no-store'})
+    apiFetch('/api/buyer/impact', {cache: 'no-store'})
       .then(async (response) => {
         const data = (await response.json().catch(() => ({}))) as ImpactResponse;
 

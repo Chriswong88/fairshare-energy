@@ -1,4 +1,5 @@
 'use client';
+import {apiFetch} from '@/lib/api-client';
 
 import Link from 'next/link';
 import {useCallback, useEffect, useMemo, useRef, useState} from 'react';
@@ -151,7 +152,7 @@ export default function RenterMarketplace() {
     }
 
     try {
-      await fetch('/api/buyer/energy', {
+      await apiFetch('/api/buyer/energy', {
         method: 'POST', headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({offerId: purchaseOffer.id, sellerName: purchaseOffer.name,
           sellerSuburb: purchaseOffer.suburb, quantityKwh: purchaseKwh,

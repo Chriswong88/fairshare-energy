@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
     .eq('id', data.user.id)
     .single();
 
-  const response = NextResponse.json({user: data.user, profile});
+  const response = NextResponse.json({user: data.user, profile, session: {access_token: data.session.access_token, refresh_token: data.session.refresh_token}});
   setAuthCookies(response, data.session);
 
   return response;

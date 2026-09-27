@@ -1,4 +1,5 @@
 'use client';
+import {apiFetch} from '@/lib/api-client';
 
 import Link from 'next/link';
 import {useEffect, useState} from 'react';
@@ -73,7 +74,7 @@ export default function BuyerBillsPage() {
   useEffect(() => {
     let cancelled = false;
 
-    fetch('/api/buyer/bills', {cache: 'no-store'})
+    apiFetch('/api/buyer/bills', {cache: 'no-store'})
       .then(async (response) => {
         const data = (await response.json().catch(() => ({}))) as BillsResponse;
 
@@ -101,7 +102,7 @@ export default function BuyerBillsPage() {
     setDownloadError('');
 
     try {
-      const response = await fetch('/api/buyer-bills-statement', {cache: 'no-store'});
+      const response = await apiFetch('/api/buyer-bills-statement', {cache: 'no-store'});
       const contentType = response.headers.get('content-type') ?? '';
 
       if (!response.ok || !contentType.includes('application/pdf')) {

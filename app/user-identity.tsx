@@ -1,4 +1,5 @@
 'use client';
+import {apiFetch} from '@/lib/api-client';
 
 import {useEffect, useState} from 'react';
 
@@ -6,7 +7,7 @@ let nameRequest: Promise<string | null> | null = null;
 
 function requestName() {
   if (!nameRequest) {
-    nameRequest = fetch('/api/me')
+    nameRequest = apiFetch('/api/me')
       .then(async (response) => {
         if (!response.ok) return null;
         const data = await response.json() as {profile?: {full_name?: string} | null};

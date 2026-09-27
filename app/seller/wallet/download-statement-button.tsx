@@ -1,4 +1,5 @@
 'use client';
+import {apiFetch} from '@/lib/api-client';
 
 import {useState} from 'react';
 
@@ -11,7 +12,7 @@ export default function DownloadStatementButton({className}: {className: string}
     setError('');
 
     try {
-      const response = await fetch('/api/bill-credits/statement', {cache: 'no-store'});
+      const response = await apiFetch('/api/bill-credits/statement', {cache: 'no-store'});
       const contentType = response.headers.get('content-type') ?? '';
 
       if (!response.ok || !contentType.includes('application/pdf')) {

@@ -1,4 +1,5 @@
 'use client';
+import {apiFetch} from '@/lib/api-client';
 
 import Link from 'next/link';
 import {useEffect,useMemo,useState} from 'react';
@@ -18,8 +19,8 @@ export default function BuyerEnergyPage() {
   const [cancelPending,setCancelPending]=useState(false);
   const months=useMemo(()=>monthOptions(),[]),s=data.summary,hasData=s.totalUsageKwh>0;
   const monthLabel=months.find(item=>item.value===month)?.label??month;
-  useEffect(()=>{let cancelled=false;Promise.resolve().then(()=>{if(!cancelled)setData(localData(month));});fetch(`/api/buyer/energy?month=${month}`).then(async r=>{if(!r.ok)throw new Error('local');const value=await r.json() as EnergyData;if(!cancelled)setData(value);}).catch(()=>undefined);return()=>{cancelled=true};},[month]);
-  const cancelPurchase=async()=>{const p=cancelTarget;if(!p)return;setCancelPending(true);let backend=false;if(!p.id.startsWith('local-')){const response=await fetch(`/api/buyer/energy/${p.id}`,{method:'DELETE'});backend=response.ok;}if(!backend){const local=readLocal().filter(item=>item.id!==p.id&&item.localId!==p.id);localStorage.setItem('fairshare-renter-purchases',JSON.stringify(local));setData(localData(month));}else{const response=await fetch(`/api/buyer/energy?month=${month}`);if(response.ok)setData(await response.json() as EnergyData);}setCancelPending(false);setCancelTarget(null);setMessage('Subscription cancelled.');};
+  useEffect(()=>{let cancelled=false;Promise.resolve().then(()=>{if(!cancelled)setData(localData(month));});apiFetch(`/api/buyer/energy?month=${month}`).then(async r=>{if(!r.ok)throw new Error('local');const value=await r.json() as EnergyData;if(!cancelled)setData(value);}).catch(()=>undefined);return()=>{cancelled=true};},[month]);
+  const cancelPurchase=async()=>{const p=cancelTarget;if(!p)return;setCancelPending(true);let backend=false;if(!p.id.startsWith('local-')){const response=await apiFetch(`/api/buyer/energy/${p.id}`,{method:'DELETE'});backend=response.ok;}if(!backend){const local=readLocal().filter(item=>item.id!==p.id&&item.localId!==p.id);localStorage.setItem('fairshare-renter-purchases',JSON.stringify(local));setData(localData(month));}else{const response=await apiFetch(`/api/buyer/energy?month=${month}`);if(response.ok)setData(await response.json() as EnergyData);}setCancelPending(false);setCancelTarget(null);setMessage('Subscription cancelled.');};
   return (
     <main className="buyer-dashboard-page buyer-energy-page">
       <BuyerSidebar />

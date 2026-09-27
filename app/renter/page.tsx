@@ -1,4 +1,5 @@
 'use client';
+import {apiFetch} from '@/lib/api-client';
 
 import Link from 'next/link';
 import {usePathname} from 'next/navigation';
@@ -149,7 +150,7 @@ export default function Renter() {
   useEffect(() => {
     let cancelled = false;
 
-    fetch('/api/buyer-dashboard', {cache: 'no-store'})
+    apiFetch('/api/buyer-dashboard', {cache: 'no-store'})
       .then(async (response) => {
         const data = (await response.json().catch(() => ({}))) as DashboardResponse;
         if (!response.ok || !data.summary) throw new Error(data.error ?? 'Could not load dashboard.');

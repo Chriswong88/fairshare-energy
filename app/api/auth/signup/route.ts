@@ -75,6 +75,7 @@ export async function POST(request: NextRequest) {
 
   const response = NextResponse.json({
     user: sessionData.user,
+    session: {access_token: sessionData.session.access_token, refresh_token: sessionData.session.refresh_token},
     profile: {
       id: userId,
       full_name: payload.fullName,

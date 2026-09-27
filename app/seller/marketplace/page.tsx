@@ -1,4 +1,5 @@
 'use client';
+import {apiFetch} from '@/lib/api-client';
 
 import Link from 'next/link';
 import UserName from '../../user-identity';
@@ -60,7 +61,7 @@ export default function SellerMarketplace() {
       if (!cancelled) setListings(loadListings());
     });
 
-    fetch('/api/listings')
+    apiFetch('/api/listings')
       .then(async (response) => {
         if (!response.ok) {
           return;
@@ -110,7 +111,7 @@ export default function SellerMarketplace() {
     const item = activeCards.find((card) => card.sourceId === confirmId);
 
     if (databaseListings) {
-      const response = await fetch(`/api/listings/${confirmId}`, {method: 'DELETE'});
+      const response = await apiFetch(`/api/listings/${confirmId}`, {method: 'DELETE'});
 
       if (!response.ok) {
         setNotice('Could not cancel this listing. Please try again.');
@@ -150,7 +151,7 @@ export default function SellerMarketplace() {
     const listing = databaseListings.find((item) => item.id === card.sourceId);
     if (!listing) return;
     const status = listing.status === 'paused' ? 'active' : 'paused';
-    const response = await fetch(`/api/listings/${listing.id}`, {
+    const response = await apiFetch(`/api/listings/${listing.id}`, {
       method: 'PATCH',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({status}),
@@ -184,7 +185,7 @@ export default function SellerMarketplace() {
     }
     setActionPending(true);
     if (databaseListings) {
-      const response = await fetch(`/api/listings/${editForm.id}`, {
+      const response = await apiFetch(`/api/listings/${editForm.id}`, {
         method: 'PATCH', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({...editForm, quantityKwh}),
       });
       const data = (await response.json().catch(() => null)) as {listing?: SellerListing; error?: string} | null;

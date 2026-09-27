@@ -1,4 +1,5 @@
 'use client';
+import {apiFetch} from '@/lib/api-client';
 
 import Link from 'next/link';
 import {useEffect, useState} from 'react';
@@ -11,7 +12,7 @@ export default function BillCreditsPage() {
   const [data, setData] = useState<CreditsResponse | null>(null);
 
   useEffect(() => {
-    fetch('/api/bill-credits', {cache: 'no-store'})
+    apiFetch('/api/bill-credits', {cache: 'no-store'})
       .then(async (response) => {
         const result = (await response.json()) as CreditsResponse;
         if (!response.ok) throw new Error(result.error || 'Could not load bill credits.');

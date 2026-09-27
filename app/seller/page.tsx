@@ -1,4 +1,5 @@
 'use client';
+import {apiFetch} from '@/lib/api-client';
 
 import Link from 'next/link';
 import UserName from '../user-identity';
@@ -12,7 +13,7 @@ export default function Seller() {
   const [error, setError] = useState('');
   useEffect(() => {
     let disposed = false;
-    fetch('/api/seller/dashboard').then(async (response) => {
+    apiFetch('/api/seller/dashboard').then(async (response) => {
       if (!response.ok) throw new Error();
       return response.json() as Promise<Dashboard>;
     }).then((data) => { if (!disposed) setDashboard(data); }).catch(() => { if (!disposed) setError('Could not load your live seller data. Please sign in and try again.'); });
