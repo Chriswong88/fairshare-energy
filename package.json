@@ -10,7 +10,8 @@
     "build": "vinext build",
     "start": "vinext start",
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next",
-    "pages:build": "node pages-build.mjs"
+    "pages:build": "node pages-build.mjs",
+    "prebuild": "node prepare-hosting.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.57.4",
